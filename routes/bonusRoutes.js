@@ -12,18 +12,18 @@ const {authMiddleware,checkRoles }= require('../middlewares/authMiddleware');
 
 
 // Create a new bonus
-router.post('/', createBonus);
+router.post('/create', createBonus);
 
 // Get all bonuses
-router.get('/', getAllBonuses);
+router.get('/showall', getAllBonuses);
 
 // Get a bonus by ID
-router.get('/:id', getBonusById);
+router.get('/show/:id', getBonusById);
 
 // Update a bonus
-router.put('/:id',updateBonus);
+router.put('/edit/:id',updateBonus);
 
 // Delete a bonus
-router.delete('/:id', deleteBonus);
+router.delete('/delete/:id', deleteBonus);
 
 module.exports = router;

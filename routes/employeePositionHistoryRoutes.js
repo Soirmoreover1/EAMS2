@@ -6,18 +6,18 @@ const {authMiddleware,checkRoles }= require('../middlewares/authMiddleware');
 
 
 // Create a new employee position history
-router.post('/', employeePositionHistoryController.createEmployeePositionHistory);
+router.post('/create', employeePositionHistoryController.createEmployeePositionHistory);
 
 // Get all employee position histories
-router.get('/', employeePositionHistoryController.getAllEmployeePositionHistories);
+router.get('/showall', employeePositionHistoryController.getAllEmployeePositionHistories);
 
 // Get an employee position history by ID
-router.get('/:id', employeePositionHistoryController.getEmployeePositionHistoryById);
+router.get('/show/:id', employeePositionHistoryController.getEmployeePositionHistoryById);
 
 // Update an employee position history
-router.put('/:id', employeePositionHistoryController.updateEmployeePositionHistory);
+router.put('/edit/:id', employeePositionHistoryController.updateEmployeePositionHistory);
 
 // Delete an employee position history
-router.delete('/:id', employeePositionHistoryController.deleteEmployeePositionHistory);
+router.delete('/delete/:id', employeePositionHistoryController.deleteEmployeePositionHistory);
 
 module.exports = router;

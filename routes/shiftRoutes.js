@@ -5,18 +5,18 @@ const shiftController = require('../controllers/shiftController');
 const {authMiddleware,checkRoles }= require('../middlewares/authMiddleware');
 
 // Create a new shift
-router.post('/', shiftController.createShift);
+router.post('/create', shiftController.createShift);
 
 // Get all shifts
-router.get('/', shiftController.getAllShifts);
+router.get('/showall', shiftController.getAllShifts);
 
 // Get a shift by ID
-router.get('/:id', shiftController.getShiftById);
+router.get('/show/:id', shiftController.getShiftById);
 
 // Update a shift
-router.put('/:id', shiftController.updateShift);
+router.put('/edit/:id', shiftController.updateShift);
 
 // Delete a shift
-router.delete('/:id', shiftController.deleteShift);
+router.delete('/delete/:id', shiftController.deleteShift);
 
 module.exports = router;

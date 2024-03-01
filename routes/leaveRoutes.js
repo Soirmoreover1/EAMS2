@@ -6,18 +6,18 @@ const {authMiddleware,checkRoles }= require('../middlewares/authMiddleware');
 
 
 // Create a new leave
-router.post('/', leaveController.createLeave);
+router.post('/create', leaveController.createLeave);
 
 // Get all leaves
-router.get('/', leaveController.getAllLeaves);
+router.get('/showall', leaveController.getAllLeaves);
 
 // Get a leave by ID
-router.get('/:id', leaveController.getLeaveById);
+router.get('/show/:id', leaveController.getLeaveById);
 
 // Update a leave
-router.put('/:id', leaveController.updateLeave);
+router.put('/edit/:id', leaveController.updateLeave);
 
 // Delete a leave
-router.delete('/:id', leaveController.deleteLeave);
+router.delete('/delete/:id', leaveController.deleteLeave);
 
 module.exports = router;

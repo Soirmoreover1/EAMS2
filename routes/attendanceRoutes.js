@@ -11,10 +11,10 @@ const {authMiddleware,checkRoles }= require('../middlewares/authMiddleware');
 
 
 
-router.post('/', createAttendance);
-router.get('/', getAllAttendances);
-router.get('/:id', getAttendanceById);
-router.put('/:id', updateAttendance);
-router.delete('/:id', deleteAttendance);
+router.post('/create', createAttendance);
+router.get('/showall', getAllAttendances);
+router.get('/show/:id', getAttendanceById);
+router.put('/edit/:id', updateAttendance);
+router.delete('/delete/:id', deleteAttendance);
 
 module.exports = router;

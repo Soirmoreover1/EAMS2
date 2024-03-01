@@ -5,18 +5,18 @@ const promotionController = require('../controllers/promotionController');
 const {authMiddleware,checkRoles }= require('../middlewares/authMiddleware');
 
 // Create a new promotion
-router.post('/', promotionController.createPromotion);
+router.post('/create', promotionController.createPromotion);
 
 // Get all promotions
-router.get('/', promotionController.getAllPromotions);
+router.get('/showall', promotionController.getAllPromotions);
 
 // Get a promotion by ID
-router.get('/:id', promotionController.getPromotionById);
+router.get('/show/:id', promotionController.getPromotionById);
 
 // Update a promotion
-router.put('/:id', promotionController.updatePromotion);
+router.put('/edit/:id', promotionController.updatePromotion);
 
 // Delete a promotion
-router.delete('/:id', promotionController.deletePromotion);
+router.delete('/delete/:id', promotionController.deletePromotion);
 
 module.exports = router;

@@ -6,18 +6,18 @@ const {authMiddleware,checkRoles }= require('../middlewares/authMiddleware');
 
 
 // Create a new deduction
-router.post('/', deductionController.createDeduction);
+router.post('/create', deductionController.createDeduction);
 
 // Get all deductions
-router.get('/', deductionController.getAllDeductions);
+router.get('/showall', deductionController.getAllDeductions);
 
 // Get a deduction by ID
-router.get('/:id', deductionController.getDeductionById);
+router.get('/show/:id', deductionController.getDeductionById);
 
 // Update a deduction
-router.put('/:id', deductionController.updateDeduction);
+router.put('/edit/:id', deductionController.updateDeduction);
 
 // Delete a deduction
-router.delete('/:id', deductionController.deleteDeduction);
+router.delete('/delete/:id', deductionController.deleteDeduction);
 
 module.exports = router;

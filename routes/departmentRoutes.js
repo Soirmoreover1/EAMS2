@@ -6,18 +6,18 @@ const {authMiddleware,checkRoles }= require('../middlewares/authMiddleware');
 
 
 // Create a new department
-router.post('/', departmentController.createDepartment);
+router.post('/create', departmentController.createDepartment);
 
 // Get all departments
-router.get('/', departmentController.getAllDepartments);
+router.get('/showall', departmentController.getAllDepartments);
 
 // Get a department by ID
-router.get('/:id', departmentController.getDepartmentById);
+router.get('/show/:id', departmentController.getDepartmentById);
 
 // Update a department
-router.put('/:id', departmentController.updateDepartment);
+router.put('/edit/:id', departmentController.updateDepartment);
 
 // Delete a department
-router.delete('/:id', departmentController.deleteDepartment);
+router.delete('/delete/:id', departmentController.deleteDepartment);
 
 module.exports = router;

@@ -6,18 +6,18 @@ const {authMiddleware,checkRoles }= require('../middlewares/authMiddleware');
 
 
 // Create a new employee
-router.post('/',authMiddleware ,employeeController.createEmployee);
+router.post('/create',authMiddleware ,employeeController.createEmployee);
 
 // Get all employees
-router.get('/', authMiddleware,employeeController.getAllEmployees);
+router.get('/showall', authMiddleware,employeeController.getAllEmployees);
 
 // Get an employee by ID
-router.get('/:id', authMiddleware,employeeController.getEmployeeById);
+router.get('/show/:id', authMiddleware,employeeController.getEmployeeById);
 
 // Update an employee
-router.put('/:id',authMiddleware, employeeController.updateEmployee);
+router.put('/edit/:id',authMiddleware, employeeController.updateEmployee);
 
 // Delete an employee
-router.delete('/:id', authMiddleware,employeeController.deleteEmployee);
+router.delete('/delete/:id', authMiddleware,employeeController.deleteEmployee);
 
 module.exports = router;

@@ -12,18 +12,18 @@ const { validateCreateCompany } = require('../middlewares/validationMiddleware')
 
 
 // Create a new company
-router.post('/', checkRoles('admin'),validateCreateCompany ,createCompany);
+router.post('/create', checkRoles('admin'),validateCreateCompany ,createCompany);
 
 // Get all companies
-router.get('/', getAllCompanies);
+router.get('/showall', getAllCompanies);
 
 // Get a company by ID
-router.get('/:id', getCompanyById);
+router.get('/show/:id', getCompanyById);
 
 // Update a company
-router.put('/:id',validateCreateCompany, updateCompany);
+router.put('/edit/:id',validateCreateCompany, updateCompany);
 
 // Delete a company
-router.delete('/:id', deleteCompany);
+router.delete('/delete/:id', deleteCompany);
 
 module.exports = router;
