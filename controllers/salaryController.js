@@ -1,12 +1,29 @@
 const { Salary } = require('../models/Salary');
+const { Employee } = require('../models/Employee');
 
 // Create a new salary
 const createSalary = async (req, res) => {
+  const { employee_id, gross_salary,net_salary,date } = req.body;
+
   try {
-    const salary = await Salary.create(req.body);
-    res.status(201).json(salary);
+    const salary = await Salary.create({
+      employee_id,
+      gross_salary,
+      net_salary,
+      date,
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        salary,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server error',
+    });
   }
 };
 

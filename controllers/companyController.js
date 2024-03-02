@@ -1,15 +1,33 @@
 const { Company } = require('../models/Company');
+const { Employee } = require('../models/Employee'); // Import the Employee model
 
 // Create a new company
 const createCompany = async (req, res) => {
+  const { name, tax_number, website, location, industry, user_id } = req.body;
+
   try {
-    const company = await Company.create(req.body);
-    res.status(201).json(company);
+    const company = await Company.create({
+      name,
+      tax_number,
+      website,
+      location,
+      industry,
+      user_id,
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        company,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server error',
+    });
   }
 };
-
 // Get all companies
 const getAllCompanies = async (req, res) => {
   try {

@@ -1,12 +1,34 @@
 const { EmployeePositionHistory } = require('../models/EmployeePositionHistory');
+const { Employee } = require('../models/Employee');
+const { Department } = require('../models/Department');
+const { Salary } = require('../models/Salary');
 
 // Create a new employee position history
 const createEmployeePositionHistory = async (req, res) => {
+  const { employee_id,position,department_id,salary,start_date,end_date } = req.body;
+
   try {
-    const employeePositionHistory = await EmployeePositionHistory.create(req.body);
-    res.status(201).json(employeePositionHistory);
+    const employeePositionHistory = await EmployeePositionHistory.create({
+      
+      employee_id,
+      position,
+      department_id,
+      salary,
+      start_date,
+       end_date,
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        employeePositionHistory,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server error',
+    });
   }
 };
 

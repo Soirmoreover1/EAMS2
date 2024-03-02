@@ -9,11 +9,11 @@ const {
   resetPassword
 } = require('../controllers/authController'); // Correct the path and import from the correct file
 
-const { authMiddleware, checkRoles } = require('../middlewares/authMiddleware');
-const {  validateAuth } = require('../middlewares/validationMiddleware');
+const {validateAuth , checkRoles } = require('../middlewares/authMiddleware');
+const {  validateUser } = require('../middlewares/validationMiddleware');
 
-router.post('/signup', checkRoles('admin'), validateAuth, signup);
-router.post('/login', validateAuth, login);
-router.post('/logout', authMiddleware, logout);
+router.post('/signup',validateUser, signup);
+router.post('/login',validateUser, login);
+router.post('/logout', logout);
 
 module.exports = router;

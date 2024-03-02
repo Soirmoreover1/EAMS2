@@ -1,14 +1,42 @@
 const { Employee } = require('../models/Employee');
+const { Department } = require('../models/Department');
+const { Company } = require('../models/Company'); // Import the Employee model
+const { Deduction } = require('../models/Deduction');
+const { Bonus } = require('../models/Bonus');
+const { Leave } = require('../models/Leave');
+const { EmployeePositionHistory } = require('../models/EmployeePositionHistory');
+const { Salary } = require('../models/Salary');
+const { Attendance } = require('../models/Attendance');
+const { Promotion } = require('../models/Promotion');
 
 // Create a new employee
 const createEmployee = async (req, res) => {
+  const { name, department_id, shift_id, hire_date, manager_id, user_id } = req.body;
+
   try {
-    const employee = await Employee.create(req.body);
-    res.status(201).json(employee);
+    const employee = await Employee.create({
+      name,
+      department_id,
+      shift_id,
+      hire_date,
+      manager_id,
+      user_id,
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        employee,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server error',
+    });
   }
 };
+
 
 // Get all employees
 const getAllEmployees = async (req, res) => {

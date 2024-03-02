@@ -1,60 +1,34 @@
 const { User } = require('../models/User');
 const dotenv = require('dotenv');
-
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 dotenv.config();
 
-const authMiddleware = async (req, res, next) => {
+const validateAuth = (req, res, next) => {
+  const token = req.header('Authorization');
+  if (!token) {
+    return res.status(401).json({ message: 'Access denied. No token provided.' });
+  }
   try {
-    const userId = req.session.userId;
-    if (!userId) {
-      return res.status(401).json({
-        status: 'fail',
-        message: 'Unauthorized',
-      });
-    }
-    const user = await User.findByPk(userId, {
-      include: [
-        
-        { model: Company },
-        { model: Employee },
-        { model: Department },
-        { model: Leave },
-        { model: Deduction },
-        { model: Promotion },
-        { model: Salary },
-        { model: Shift },
-        { model: EmployeePositionHistory },
-        { model: Attendance },
-        { model: Bonus },
-      ],
-    });
-    if (!user) {
-      return res.status(404).json({
-        status: 'fail',
-        message: 'User not found',
-      });
-    }
-    req.user = user;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
     next();
   } catch (error) {
-    res.status(500).json({
-      status: 'error',
-      message: error.message,
-    });
+    res.status(400).json({ message: 'Invalid token.' });
   }
 };
 
-const checkRoles = (...roles) => (req, res, next) => {
-  if (!roles.includes(req.user.role)) {
-    return res.status(403).json({
-      status: 'fail',
-      message: 'Forbidden',
-    });
-  }
-  next();
-};
-  
-  module.exports = {
-    authMiddleware,
-    checkRoles,
+const checkRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Access denied. Invalid role.' });
+    }
+    next();
   };
+};
+
+module.exports = {
+ 
+  validateAuth,
+  checkRoles
+};

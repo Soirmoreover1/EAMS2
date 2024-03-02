@@ -1,12 +1,31 @@
 const { Attendance } = require('../models/Attendance');
+const { Employee } = require('../models/Employee');
 
 // Create a new attendance
 const createAttendance = async (req, res) => {
+  const { employee_id,date,time_in,time_out,total_hours_worked,overtime_hours } = req.body;
+
   try {
-    const attendance = await Attendance.create(req.body);
-    res.status(201).json(attendance);
+    const attendance = await Attendance.create({
+      employee_id,
+      date,
+      time_in,
+      time_out,
+      total_hours_worked,
+      overtime_hours,
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        attendance,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server error',
+    });
   }
 };
 

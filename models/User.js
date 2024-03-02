@@ -21,7 +21,9 @@ User.init({
   },
   role: {
     type: DataTypes.ENUM('admin', 'employee', 'manager'),
-    allowNull: false
+    allowNull: false,
+    defaultValue:'admin',
+
   }
 }, {
   sequelize,

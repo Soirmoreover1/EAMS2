@@ -4,11 +4,27 @@ const { Employee } = require('../models/Employee'); // Import the Employee model
 
 // Create a new bonus
 const createBonus = async (req, res) => {
+  const { employee_id,date,bonus_type,bonus_amount} = req.body;
+
   try {
-    const bonus = await Bonus.create(req.body);
-    res.status(201).json(bonus);
+    const bonus = await Bonus.create({
+      employee_id,
+      bonus_type,
+      bonus_amount,
+      date,
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        bonus,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server error',
+    });
   }
 };
 

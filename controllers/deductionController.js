@@ -1,12 +1,29 @@
 const { Deduction } = require('../models/Deduction');
+const { Employee } = require('../models/Employee'); // Import the Employee model
 
 // Create a new deduction
 const createDeduction = async (req, res) => {
+  const { employee_id,date,deduction_type,deduction_amount} = req.body;
+
   try {
-    const deduction = await Deduction.create(req.body);
-    res.status(201).json(deduction);
+    const deduction = await Deduction.create({
+      employee_id,
+      deduction_type,
+      deduction_amount,
+      date,
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        deduction,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server error',
+    });
   }
 };
 

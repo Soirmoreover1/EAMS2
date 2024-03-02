@@ -1,12 +1,30 @@
 const { Promotion } = require('../models/Promotion');
+const { Employee } = require('../models/Employee');
 
 // Create a new promotion
 const createPromotion = async (req, res) => {
+  const { employee_id, promotion_date,prev_position,new_position,salary_increase } = req.body;
+
   try {
-    const promotion = await Promotion.create(req.body);
-    res.status(201).json(promotion);
+    const promotion = await Promotion.create({
+      employee_id,
+      promotion_date,
+      prev_position,
+      new_position,
+      salary_increase,
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        promotion,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server error',
+    });
   }
 };
 

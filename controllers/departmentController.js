@@ -1,12 +1,29 @@
 const { Department } = require('../models/Department');
+const { Employee } = require('../models/Employee'); // Import the Employee model
+const { Company } = require('../models/Company'); // Import the Employee model
 
 // Create a new department
-const createDepartment = async (req, res) => {
+const createDepartment= async (req, res) => {
+  const { name,manager_id,company_id} = req.body;
+
   try {
-    const department = await Department.create(req.body);
-    res.status(201).json(department);
+    const department = await Department.create({
+      name,
+      manager_id,
+      company_id
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        department,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server error',
+    });
   }
 };
 

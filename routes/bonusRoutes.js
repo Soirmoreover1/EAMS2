@@ -8,11 +8,12 @@ const {
   updateBonus,
   deleteBonus
                  }=require('../controllers/bonusController');
-const {authMiddleware,checkRoles }= require('../middlewares/authMiddleware');
+const {validateAuth , checkRoles } = require('../middlewares/authMiddleware');
+const { validateCreateBonus } = require('../middlewares/validationMiddleware');
 
 
 // Create a new bonus
-router.post('/create', createBonus);
+router.post('/create',validateCreateBonus, createBonus);
 
 // Get all bonuses
 router.get('/showall', getAllBonuses);
@@ -21,7 +22,7 @@ router.get('/showall', getAllBonuses);
 router.get('/show/:id', getBonusById);
 
 // Update a bonus
-router.put('/edit/:id',updateBonus);
+router.put('/edit/:id',validateCreateBonus,updateBonus);
 
 // Delete a bonus
 router.delete('/delete/:id', deleteBonus);

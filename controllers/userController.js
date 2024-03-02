@@ -1,16 +1,37 @@
 const { User } = require('../models/User');
+const { Employee } = require('../models/Employee');
+const { Department } = require('../models/Department');
+const { Company } = require('../models/Company'); // Import the Employee model
+const { Deduction } = require('../models/Deduction');
+const { Bonus } = require('../models/Bonus');
+const { Leave } = require('../models/Leave');
+const { EmployeePositionHistory } = require('../models/EmployeePositionHistory');
+const { Salary } = require('../models/Salary');
+const { Attendance } = require('../models/Attendance');
+const { Promotion } = require('../models/Promotion');
+
 
 const createUser = async (req, res) => {
+  const { username,email,password,role} = req.body;
+
   try {
-    const user = await User.create(req.body);
+    const user = await User.create({
+      username,
+      email,
+      password,
+      role,
+    });
+
     res.status(201).json({
       status: 'success',
-      data: user,
+      data: {
+        user,
+      },
     });
   } catch (error) {
     res.status(500).json({
-      status: 'error',
-      message: error.message,
+      status: 'fail',
+      message: 'Server error',
     });
   }
 };

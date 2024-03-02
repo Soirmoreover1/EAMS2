@@ -1,12 +1,29 @@
 const { Shift } = require('../models/Shift');
+const { Employee } = require('../models/Employee');
 
 // Create a new shift
 const createShift = async (req, res) => {
+  const { shift_name, start_time, end_time, working_days } = req.body;
+
   try {
-    const shift = await Shift.create(req.body);
-    res.status(201).json(shift);
+    const shift = await Shift.create({
+      shift_name,
+      start_time,
+      end_time,
+      working_days,
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        shift,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server error',
+    });
   }
 };
 

@@ -1,12 +1,30 @@
 const { Leave } = require('../models/Leave');
+const { Employee } = require('../models/Employee');
 
 // Create a new leave
 const createLeave = async (req, res) => {
+  const { employee_id, type_of_leave, start_date, end_date, duration } = req.body;
+
   try {
-    const leave = await Leave.create(req.body);
-    res.status(201).json(leave);
+    const leave = await Leave.create({
+      employee_id,
+      type_of_leave,
+      start_date,
+      end_date,
+      duration,
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        leave,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server error',
+    });
   }
 };
 

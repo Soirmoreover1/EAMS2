@@ -7,7 +7,8 @@ const {
     updateCompany,
     deleteCompany
                  }=require('../controllers/companyController');
-const {authMiddleware,checkRoles }= require('../middlewares/authMiddleware');
+const {validateAuth , checkRoles } = require('../middlewares/authMiddleware');
+
 const { validateCreateCompany } = require('../middlewares/validationMiddleware');
 
 
