@@ -1,48 +1,44 @@
 // models/Promotion.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-
-class Promotion extends Model { }
-
-Promotion.init(
+module.exports = (sequelize, Sequelize) => {
+  const Promotion= sequelize.define("promotion", 
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
     employee_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'employee',
         key: 'id',
       },
     },
     promotion_date: {
-      type: DataTypes.DATEONLY,
+      type: Sequelize.DATEONLY,
       allowNull: false,
     },
     prev_position: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     new_position: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     salary_increase: {
-      type: DataTypes.FLOAT,
+      type: Sequelize.FLOAT,
       allowNull: false,
     },
   },
   {
-    sequelize,
-    timestamps: false,
+   timestamps: false,
     freezeTableName: true,
     underscored: true,
     modelName: 'promotion',
   }
 );
 
-module.exports = Promotion;
+return Promotion;
+};

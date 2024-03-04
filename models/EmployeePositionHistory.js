@@ -1,55 +1,51 @@
 // models/EmployeePositionHistory.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-
-class EmployeePositionHistory extends Model { }
-
-EmployeePositionHistory.init(
+module.exports = (sequelize, Sequelize) => {
+  const EmployeePositionHistory= sequelize.define("employeePositionHistory", 
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
     employee_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'employee',
         key: 'id',
       },
     },
     position: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     department_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'department',
         key: 'id',
       },
     },
     salary: {
-      type: DataTypes.FLOAT,
+      type: Sequelize.FLOAT,
       allowNull: false,
     },
     start_date: {
-      type: DataTypes.DATEONLY,
+      type: Sequelize.DATEONLY,
       allowNull: false,
     },
     end_date: {
-      type: DataTypes.DATEONLY,
+      type: Sequelize.DATEONLY,
       allowNull: true,
     },
   },
   {
-    sequelize,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: 'employee_position_history',
+    modelName: 'employeePositionHistory',
   }
 );
 
-module.exports = EmployeePositionHistory;
+return EmployeePositionHistory;
+};

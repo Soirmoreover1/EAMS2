@@ -9,15 +9,15 @@ const { EmployeePositionHistory } = require('../models/EmployeePositionHistory')
 const { Salary } = require('../models/Salary');
 const { Attendance } = require('../models/Attendance');
 const { Promotion } = require('../models/Promotion');
+const db = require('../models/index');
 
 
 const createUser = async (req, res) => {
-  const { username,email,password,role} = req.body;
+  const { username,password,role} = req.body;
 
   try {
     const user = await User.create({
       username,
-      email,
       password,
       role,
     });
@@ -41,17 +41,47 @@ const getUserProfile = async (req, res) => {
     const user = await User.findByPk(req.user.id, {
       include: [
         
-        { model: Company },
-        { model: Employee },
-        { model: Department },
-        { model: Leave },
-        { model: Deduction },
-        { model: Promotion },
-        { model: Salary },
-        { model: Shift },
-        { model: EmployeePositionHistory },
-        { model: Attendance },
-        { model: Bonus },
+        { model: db.Company },
+        { model: db.Employee },
+        { model: db.Department },
+        { model: db.Leave },
+        { model: db.Deduction },
+        { model: db.Promotion },
+        { model: db.Salary },
+        { model: db.Shift },
+        { model: db.EmployeePositionHistory },
+        { model: db.Attendance },
+        { model: db.Bonus },
+      ],
+    });
+    res.status(200).json({
+      status: 'success',
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
+   
+const getAllUser = async (req, res) => {
+  try {
+    const user = await User.findAll(req.user.id, {
+      include: [
+        
+        { model: db.Company },
+        { model: db.Employee },
+        { model: db.Department },
+        { model: db.Leave },
+        { model: db.Deduction },
+        { model: db.Promotion },
+        { model: db.Salary },
+        { model: db.Shift },
+        { model: db.EmployeePositionHistory },
+        { model: db.Attendance },
+        { model: db.Bonus },
       ],
     });
     res.status(200).json({
@@ -80,17 +110,17 @@ const updateUser = async (req, res) => {
     const updatedUser = await User.findByPk(req.params.id, {
       include: [
         
-        { model: Company },
-        { model: Employee },
-        { model: Department },
-        { model: Leave },
-        { model: Deduction },
-        { model: Promotion },
-        { model: Salary },
-        { model: Shift },
-        { model: EmployeePositionHistory },
-        { model: Attendance },
-        { model: Bonus },
+        { model: db.Company },
+        { model: db.Employee },
+        { model: db.Department },
+        { model: db.Leave },
+        { model: db.Deduction },
+        { model: db.Promotion },
+        { model: db.Salary },
+        { model: db.Shift },
+        { model: db.EmployeePositionHistory },
+        { model: db.Attendance },
+        { model: db.Bonus },
       ],
     });
     res.status(200).json({
@@ -131,6 +161,8 @@ module.exports = {
     updateUser,
     deleteUser,
     getUserProfile,
-    createUser 
+    createUser ,
+    getAllUser 
+
 
 };

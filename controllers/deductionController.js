@@ -1,5 +1,6 @@
 const { Deduction } = require('../models/Deduction');
 const { Employee } = require('../models/Employee'); // Import the Employee model
+const db = require('../models/index');
 
 // Create a new deduction
 const createDeduction = async (req, res) => {
@@ -32,7 +33,7 @@ const getAllDeductions = async (req, res) => {
   try {
     const deductions = await Deduction.findAll({
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(deductions);
@@ -46,7 +47,7 @@ const getDeductionById = async (req, res) => {
   try {
     const deduction = await Deduction.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     if (!deduction) {
@@ -69,7 +70,7 @@ const updateDeduction = async (req, res) => {
     }
     const updatedDeduction = await Deduction.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(updatedDeduction);

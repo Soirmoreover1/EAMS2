@@ -18,11 +18,10 @@ const bonusRoutes = require('./routes/bonusRoutes');
 const userRoutes = require('./routes/userRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
 const errorHandler = require('./middlewares/errorHandler');
-const sequelize = require('./sequelize');
+const db  = require('./models/index');
+
 const {validateAuth , checkRoles } = require('./middlewares/authMiddleware');
-
 dotenv.config();
-
 const app = express();
 
 app.use(cors());
@@ -55,7 +54,7 @@ app.use('/api/users', validateAuth, userRoutes);
 
 app.use(errorHandler);
 
-sequelize.sync({ force: false })
+ db.sequelize.sync({ alter: true })
   .then(() => {
     const PORT = process.env.PORT || 3307;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,7 +1,6 @@
 const { EmployeePositionHistory } = require('../models/EmployeePositionHistory');
-const { Employee } = require('../models/Employee');
-const { Department } = require('../models/Department');
-const { Salary } = require('../models/Salary');
+
+const db = require('../models/index');
 
 // Create a new employee position history
 const createEmployeePositionHistory = async (req, res) => {
@@ -37,9 +36,9 @@ const getAllEmployeePositionHistories = async (req, res) => {
   try {
     const employeePositionHistories = await EmployeePositionHistory.findAll({
       include: [
-        { model: Employee },
-        { model: Department },
-        { model: Salary },
+        { model: db.Employee },
+        { model: db.Department },
+        { model: db.Salary },
       ],
     });
     res.status(200).json(employeePositionHistories);
@@ -53,9 +52,9 @@ const getEmployeePositionHistoryById = async (req, res) => {
   try {
     const employeePositionHistory = await EmployeePositionHistory.findByPk(req.params.id, {
       include: [
-        { model: Employee },
-        { model: Department },
-        { model: Salary },
+        { model: db.Employee },
+        { model: db.Department },
+        { model: db.Salary },
       ],
     });
     if (!employeePositionHistory) {
@@ -78,9 +77,9 @@ const updateEmployeePositionHistory = async (req, res) => {
     }
     const updatedEmployeePositionHistory = await EmployeePositionHistory.findByPk(req.params.id, {
       include: [
-        { model: Employee },
-        { model: Department },
-        { model: Salary },
+        { model: db.Employee },
+        { model: db.Department },
+        { model: db.Salary },
       ],
     });
     res.status(200).json(updatedEmployeePositionHistory);

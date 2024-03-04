@@ -1,5 +1,5 @@
 const { Bonus } = require('../models/Bonus');
-const { Employee } = require('../models/Employee'); // Import the Employee model
+const db = require('../models/index');
 
 
 // Create a new bonus
@@ -33,7 +33,7 @@ const getAllBonuses = async (req, res) => {
   try {
     const bonuses = await Bonus.findAll({
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(bonuses);
@@ -47,7 +47,7 @@ const getBonusById = async (req, res) => {
   try {
     const bonus = await Bonus.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     if (!bonus) {
@@ -70,7 +70,7 @@ const updateBonus = async (req, res) => {
     }
     const updatedBonus = await Bonus.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(updatedBonus);

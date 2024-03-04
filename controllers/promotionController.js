@@ -1,5 +1,5 @@
 const { Promotion } = require('../models/Promotion');
-const { Employee } = require('../models/Employee');
+const db = require('../models/index');
 
 // Create a new promotion
 const createPromotion = async (req, res) => {
@@ -33,7 +33,7 @@ const getAllPromotions = async (req, res) => {
   try {
     const promotions = await Promotion.findAll({
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(promotions);
@@ -47,7 +47,7 @@ const getPromotionById = async (req, res) => {
   try {
     const promotion = await Promotion.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     if (!promotion) {
@@ -70,7 +70,7 @@ const updatePromotion = async (req, res) => {
     }
     const updatedPromotion = await Promotion.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(updatedPromotion);

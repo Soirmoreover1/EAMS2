@@ -1,30 +1,26 @@
 // models/Department.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-
-class Department extends Model { }
-
-Department.init(
+module.exports = (sequelize, Sequelize) => {
+  const Department= sequelize.define("department", 
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     manager_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'employee',
         key: 'id',
       },
     },
     company_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'company',
         key: 'id',
@@ -32,7 +28,6 @@ Department.init(
     },
   },
   {
-    sequelize,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
@@ -40,4 +35,5 @@ Department.init(
   }
 );
 
-module.exports = Department;
+return Department; 
+};

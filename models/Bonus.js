@@ -1,44 +1,37 @@
 // models/Bonus.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-const { Employee } = require('./Employee'); // Import the Employee model
-
-class Bonus extends Model { }
-
-Bonus.init(
+module.exports = (sequelize, Sequelize) => {
+  const Bonus= sequelize.define("bonus", 
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
     employee_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'employee',
         key: 'id',
       },
     },
     bonus_type: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     bonus_amount: {
-      type: DataTypes.FLOAT,
+      type: Sequelize.FLOAT,
       allowNull: false,
     },
     date: {
-      type: DataTypes.DATEONLY,
+      type: Sequelize.DATEONLY,
       allowNull: false,
     },
   },
   {
-    sequelize,
     timestamps: false,
-    tableName: 'Bonus',
+    tableName: 'bonus',
 
-  }
-);
-
-module.exports = Bonus;
+  });
+return Bonus;
+};

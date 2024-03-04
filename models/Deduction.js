@@ -1,42 +1,40 @@
 // models/Deduction.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-
-class Deduction extends Model { }
-
-Deduction.init(
+module.exports = (sequelize, Sequelize) => {
+  const Deduction= sequelize.define("deduction", 
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
     employee_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'employee',
         key: 'id',
       },
     },
     deduction_type: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     deduction_amount: {
-      type: DataTypes.FLOAT,
+      type: Sequelize.FLOAT,
       allowNull: false,
     },
     date: {
-      type: DataTypes.DATEONLY,
+      type: Sequelize.DATEONLY,
       allowNull: false,
     },
   },
   {
-    sequelize,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
     modelName: 'deduction',
   }
 );
+
+return Deduction;
+};

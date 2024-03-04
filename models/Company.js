@@ -1,40 +1,36 @@
 // models/Company.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-
-class Company extends Model { }
-
-Company.init(
+module.exports = (sequelize, Sequelize) => {
+  const Company= sequelize.define("company", 
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     manager:{
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     tax_number:{
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },website:{
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },location:{
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },industry:{
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     user_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'user',
         key: 'id',
@@ -42,7 +38,6 @@ Company.init(
     },
   },
   {
-    sequelize,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
@@ -50,4 +45,5 @@ Company.init(
   }
 );
 
-module.exports = Company;
+return Company;
+};

@@ -1,13 +1,6 @@
 const { Employee } = require('../models/Employee');
-const { Department } = require('../models/Department');
-const { Company } = require('../models/Company'); // Import the Employee model
-const { Deduction } = require('../models/Deduction');
-const { Bonus } = require('../models/Bonus');
-const { Leave } = require('../models/Leave');
-const { EmployeePositionHistory } = require('../models/EmployeePositionHistory');
-const { Salary } = require('../models/Salary');
-const { Attendance } = require('../models/Attendance');
-const { Promotion } = require('../models/Promotion');
+
+const db = require('../models/index');
 
 // Create a new employee
 const createEmployee = async (req, res) => {
@@ -43,16 +36,16 @@ const getAllEmployees = async (req, res) => {
   try {
     const employees = await Employee.findAll({
       include: [
-        { model: Leave },
-        { model: Deduction },
-        { model: Promotion },
-        { model: EmployeePositionHistory },
-        { model: Shift },
-        { model: Company },
-        { model: Salary },
-        { model: Department },
-        { model: Attendance },
-        { model: Bonus },
+        { model: db.Leave },
+        { model: db.Deduction },
+        { model: db.Promotion },
+        { model: db.EmployeePositionHistory },
+        { model: db.Shift },
+        { model: db.Company },
+        { model: db.Salary },
+        { model: db.Department },
+        { model: db.Attendance },
+        { model: db.Bonus },
       ],
     });
     res.status(200).json(employees);
@@ -66,16 +59,16 @@ const getEmployeeById = async (req, res) => {
   try {
     const employee = await Employee.findByPk(req.params.id, {
       include: [
-        { model: Leave },
-        { model: Deduction },
-        { model: Promotion },
-        { model: EmployeePositionHistory },
-        { model: Shift },
-        { model: Company },
-        { model: Salary },
-        { model: Department },
-        { model: Attendance },
-        { model: Bonus },
+        { model: db.Leave },
+        { model: db.Deduction },
+        { model: db.Promotion },
+        { model: db.EmployeePositionHistory },
+        { model: db.Shift },
+        { model: db.Company },
+        { model: db.Salary },
+        { model: db.Department },
+        { model: db.Attendance },
+        { model: db.Bonus },
       ],
     });
     if (!employee) {
@@ -98,16 +91,16 @@ const updateEmployee = async (req, res) => {
     }
     const updatedEmployee = await Employee.findByPk(req.params.id, {
       include: [
-        { model: Leave },
-        { model: Deduction },
-        { model: Promotion },
-        { model: EmployeePositionHistory },
-        { model: Shift },
-        { model: Company },
-        { model: Salary },
-        { model: Department },
-        { model: Attendance },
-        { model: Bonus },
+        { model: db.Leave },
+        { model: db.Deduction },
+        { model: db.Promotion },
+        { model: db.EmployeePositionHistory },
+        { model: db.Shift },
+        { model: db.Company },
+        { model: db.Salary },
+        { model: db.Department },
+        { model: db.Attendance },
+        { model: db.Bonus },
       ],
     });
     res.status(200).json(updatedEmployee);

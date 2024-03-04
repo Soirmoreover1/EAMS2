@@ -1,43 +1,38 @@
 // models/Leave.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-
-class Leave extends Model { }
-
-Leave.init(
+module.exports = (sequelize, Sequelize) => {
+  const Leave= sequelize.define("leave", 
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
     employee_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'employee',
         key: 'id',
       },
     },
     type_of_leave: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     start_date: {
-      type: DataTypes.DATEONLY,
+      type: Sequelize.DATEONLY,
       allowNull: false,
     },
     end_date: {
-      type: DataTypes.DATEONLY,
+      type: Sequelize.DATEONLY,
       allowNull: false,
     },
     duration: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
     },
   },
   {
-    sequelize,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
@@ -45,4 +40,5 @@ Leave.init(
   }
 );
 
-module.exports = Leave;
+return Leave;
+};

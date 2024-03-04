@@ -1,5 +1,5 @@
 const { Company } = require('../models/Company');
-const { Employee } = require('../models/Employee'); // Import the Employee model
+const db = require('../models/index');
 
 // Create a new company
 const createCompany = async (req, res) => {
@@ -33,7 +33,7 @@ const getAllCompanies = async (req, res) => {
   try {
     const companies = await Company.findAll({
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(companies);
@@ -47,7 +47,7 @@ const getCompanyById = async (req, res) => {
   try {
     const company = await Company.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     if (!company) {
@@ -70,7 +70,7 @@ const updateCompany = async (req, res) => {
     }
     const updatedCompany = await Company.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(updatedCompany);

@@ -1,6 +1,6 @@
 const { Department } = require('../models/Department');
-const { Employee } = require('../models/Employee'); // Import the Employee model
-const { Company } = require('../models/Company'); // Import the Employee model
+ // Import the Employee model
+const db = require('../models/index');
 
 // Create a new department
 const createDepartment= async (req, res) => {
@@ -32,8 +32,8 @@ const getAllDepartments = async (req, res) => {
   try {
     const departments = await Department.findAll({
       include: [
-        { model: Employee },
-        { model: Company },
+        { model: db.Employee },
+        { model: db.Company },
       ],
     });
     res.status(200).json(departments);
@@ -47,8 +47,8 @@ const getDepartmentById = async (req, res) => {
   try {
     const department = await Department.findByPk(req.params.id, {
       include: [
-        { model: Employee },
-        { model: Company },
+        { model: db.Employee },
+        { model: db.Company },
       ],
     });
     if (!department) {
@@ -71,8 +71,8 @@ const updateDepartment = async (req, res) => {
     }
     const updatedDepartment = await Department.findByPk(req.params.id, {
       include: [
-        { model: Employee },
-        { model: Company },
+        { model: db.Employee },
+        { model: db.Company },
       ],
     });
     res.status(200).json(updatedDepartment);

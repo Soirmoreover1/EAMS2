@@ -1,5 +1,5 @@
 const { Attendance } = require('../models/Attendance');
-const { Employee } = require('../models/Employee');
+const db = require('../models/index');
 
 // Create a new attendance
 const createAttendance = async (req, res) => {
@@ -35,7 +35,7 @@ const getAllAttendances = async (req, res) => {
   try {
     const attendances = await Attendance.findAll({
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(attendances);
@@ -49,7 +49,7 @@ const getAttendanceById = async (req, res) => {
   try {
     const attendance = await Attendance.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     if (!attendance) {
@@ -72,7 +72,7 @@ const updateAttendance = async (req, res) => {
     }
     const updatedAttendance = await Attendance.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(updatedAttendance);

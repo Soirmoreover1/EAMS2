@@ -1,5 +1,5 @@
 const { Shift } = require('../models/Shift');
-const { Employee } = require('../models/Employee');
+const db = require('../models/index');
 
 // Create a new shift
 const createShift = async (req, res) => {
@@ -30,7 +30,11 @@ const createShift = async (req, res) => {
 // Get all shifts
 const getAllShifts = async (req, res) => {
   try {
-    const shifts = await Shift.findAll();
+    const shifts = await Shift.findAll({
+      include: [
+        { model: db.Employee },
+      ],
+    });
     res.status(200).json(shifts);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -40,7 +44,11 @@ const getAllShifts = async (req, res) => {
 // Get a shift by ID
 const getShiftById = async (req, res) => {
   try {
-    const shift = await Shift.findByPk(req.params.id);
+    const shift = await Shift.findByPk(req.params.id, {
+      include: [
+        { model: db.Employee },
+      ],
+    });
     if (!shift) {
       return res.status(404).json({ message: 'Shift not found' });
     }
@@ -59,7 +67,11 @@ const updateShift = async (req, res) => {
     if (!updated) {
       return res.status(404).json({ message: 'Shift not found' });
     }
-    const updatedShift = await Shift.findByPk(req.params.id);
+    const updatedShift = await Shift.findByPk(req.params.id, {
+      include: [
+        { model: db.Employee },
+      ],
+    });
     res.status(200).json(updatedShift);
   } catch (error) {
     res.status(500).json({ message: error.message });

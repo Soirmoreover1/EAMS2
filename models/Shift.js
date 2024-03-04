@@ -1,41 +1,42 @@
 // models/Shift.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-
-class Shift extends Model { }
-
-Shift.init(
+module.exports = (sequelize, Sequelize) => {
+  const Shift= sequelize.define("shift", 
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
     shift_name: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     start_time: {
-      type: DataTypes.TIME,
+      type: Sequelize.TIME,
       allowNull: false,
     },
     end_time: {
-      type: DataTypes.TIME,
+      type: Sequelize.TIME,
       allowNull: false,
     },
     working_days: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
+    employee_id: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'employee',
+        key: 'id',
+      },
   },
-  {
-    sequelize,
+},{
     timestamps: false,
     freezeTableName: true,
     underscored: true,
     modelName: 'shift',
   }
 );
-
-module.exports = Shift;
+return Shift;
+};

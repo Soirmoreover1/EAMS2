@@ -1,52 +1,46 @@
+
 // models/Attendance.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-
-class Attendance extends Model { }
-
-Attendance.init(
-  {
+module.exports = (sequelize, Sequelize) => {
+  const Attendance= sequelize.define("attendance", {
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
     employee_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'employee',
         key: 'id',
       },
     },
     date: {
-      type: DataTypes.DATEONLY,
+      type: Sequelize.DATEONLY,
       allowNull: false,
     },
     time_in: {
-      type: DataTypes.TIME,
+      type: Sequelize.TIME,
       allowNull: false,
     },
     time_out: {
-      type: DataTypes.TIME,
+      type: Sequelize.TIME,
       allowNull: false,
     },
     total_hours_worked: {
-      type: DataTypes.FLOAT,
+      type: Sequelize.FLOAT,
       allowNull: false,
     },
     overtime_hours: {
-      type: DataTypes.FLOAT,
+      type: Sequelize.FLOAT,
       allowNull: false,
     },
   },
   {
-    sequelize,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
     modelName: 'attendance',
-  }
-);
-
-module.exports = Attendance;
+  });
+ return Attendance;
+};

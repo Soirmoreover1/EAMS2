@@ -1,48 +1,44 @@
 // models/Employee.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-
-class Employee extends Model { }
-
-Employee.init(
+module.exports = (sequelize, Sequelize) => {
+  const Employee= sequelize.define("employee", 
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     department_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'department',
         key: 'id',
       },
     },
     shift_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'shift',
         key: 'id',
       },
     },
     hire_date: {
-      type: DataTypes.DATEONLY,
+      type: Sequelize.DATEONLY,
       allowNull: false,
     },
     manager_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'employee',
         key: 'id',
       },
     },
     user_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: 'user',
         key: 'id',
@@ -50,7 +46,6 @@ Employee.init(
     },
   },
   {
-    sequelize,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
@@ -58,4 +53,6 @@ Employee.init(
   }
 );
 
-module.exports = Employee;
+
+return Employee;
+};

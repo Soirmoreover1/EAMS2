@@ -8,11 +8,10 @@ dotenv.config();
 
 const signup = async (req, res) => {
   try {
-    const { username,email, password, role } = req.body;
+    const { username, password, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       username,
-      email,
       password: hashedPassword,
       role,
     });
@@ -59,7 +58,7 @@ const forgetPassword = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+/*
 const resetPassword = async (req, res) => {
   try {
     const { newPassword, confirmPassword } = req.body;
@@ -77,11 +76,11 @@ const resetPassword = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+};*/
 module.exports = {
   signup,
   login,
   logout,
-  forgetPassword,
-  resetPassword,
+  /*forgetPassword,
+  resetPassword,*/
 };

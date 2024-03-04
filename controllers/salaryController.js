@@ -1,5 +1,5 @@
 const { Salary } = require('../models/Salary');
-const { Employee } = require('../models/Employee');
+const db = require('../models/index');
 
 // Create a new salary
 const createSalary = async (req, res) => {
@@ -32,7 +32,7 @@ const getAllSalaries = async (req, res) => {
   try {
     const salaries = await Salary.findAll({
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(salaries);
@@ -46,7 +46,7 @@ const getSalaryById = async (req, res) => {
   try {
     const salary = await Salary.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     if (!salary) {
@@ -69,7 +69,7 @@ const updateSalary = async (req, res) => {
     }
     const updatedSalary = await Salary.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.Employee },
       ],
     });
     res.status(200).json(updatedSalary);
