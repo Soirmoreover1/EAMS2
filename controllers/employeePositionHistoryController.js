@@ -1,13 +1,13 @@
-const { EmployeePositionHistory } = require('../models/EmployeePositionHistory');
+const { EmployeePositionHistory } = require('../models');
 
-const db = require('../models/index');
+const db = require('../models');
 
 // Create a new employee position history
 const createEmployeePositionHistory = async (req, res) => {
   const { employee_id,position,department_id,salary,start_date,end_date } = req.body;
 
   try {
-    const employeePositionHistory = await EmployeePositionHistory.create({
+    const employeePositionHistory = await db.employeePositionHistory.create({
       
       employee_id,
       position,
@@ -26,19 +26,19 @@ const createEmployeePositionHistory = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: 'fail',
-      message: 'Server error',
-    });
+      message:error.message,
+        });
   }
 };
 
 // Get all employee position histories
 const getAllEmployeePositionHistories = async (req, res) => {
   try {
-    const employeePositionHistories = await EmployeePositionHistory.findAll({
+    const employeePositionHistories = await db.employeePositionHistory.findAll({
       include: [
-        { model: db.Employee },
-        { model: db.Department },
-        { model: db.Salary },
+        { model: db.employee },
+        { model: db.department },
+        { model: db.salary },
       ],
     });
     res.status(200).json(employeePositionHistories);
@@ -50,11 +50,11 @@ const getAllEmployeePositionHistories = async (req, res) => {
 // Get an employee position history by ID
 const getEmployeePositionHistoryById = async (req, res) => {
   try {
-    const employeePositionHistory = await EmployeePositionHistory.findByPk(req.params.id, {
+    const employeePositionHistory = await db.employeePositionHistory.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
-        { model: db.Department },
-        { model: db.Salary },
+        { model: db.employee },
+        { model: db.department },
+        { model: db.salary },
       ],
     });
     if (!employeePositionHistory) {
@@ -69,17 +69,17 @@ const getEmployeePositionHistoryById = async (req, res) => {
 // Update an employee position history
 const updateEmployeePositionHistory = async (req, res) => {
   try {
-    const [updated] = await EmployeePositionHistory.update(req.body, {
+    const [updated] = await db.employeePositionHistory.update(req.body, {
       where: { id: req.params.id },
     });
     if (!updated) {
       return res.status(404).json({ message: 'Employee position history not found' });
     }
-    const updatedEmployeePositionHistory = await EmployeePositionHistory.findByPk(req.params.id, {
+    const updatedEmployeePositionHistory = await db.employeePositionHistory.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
-        { model: db.Department },
-        { model: db.Salary },
+        { model: db.employee },
+        { model: db.department },
+        { model: db.salary },
       ],
     });
     res.status(200).json(updatedEmployeePositionHistory);
@@ -91,7 +91,7 @@ const updateEmployeePositionHistory = async (req, res) => {
 // Delete an employee position history
 const deleteEmployeePositionHistory = async (req, res) => {
   try {
-    const deleted = await EmployeePositionHistory.destroy({
+    const deleted = await db.employeePositionHistory.destroy({
       where: { id: req.params.id },
     });
     if (!deleted) {

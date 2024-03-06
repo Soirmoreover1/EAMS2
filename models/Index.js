@@ -7,7 +7,7 @@ const sequelize = new Sequelize(process.env.DB_NAME,
       host: process.env.DB_HOST,
       port: process.env.DB_PORT,
       dialect: 'mysql',
-      logging: console.log,
+      logging: false,
       define: {
         timestamps: false,
         freezeTableName: true,
@@ -41,6 +41,10 @@ db.user.hasOne(db.employee, { foreignKey: 'user_id' });
 db.employee.belongsTo(db.user, { foreignKey: 'user_id' });
 
 
+db.company.hasMany(db.employee, { foreignKey: 'companyId' });
+db.employee.belongsTo(db.company, { foreignKey: 'companyId' });
+
+
 db.user.hasOne(db.company, { foreignKey: 'user_id' });
 db.company.belongsTo(db.user, { foreignKey: 'user_id' });
 
@@ -50,6 +54,10 @@ db.department.hasMany(db.employee, { foreignKey: 'department_id' });
 db.employee.belongsTo(db.shift, { foreignKey: 'shift_id' });
 db.shift.hasMany(db.employee, { foreignKey: 'shift_id' });
 
+db.company.hasMany(db.department, { foreignKey: 'company_id' });
+db.department.belongsTo(db.company, { foreignKey: 'company_id' });
+
+
 db.employee.hasOne(db.employeePositionHistory, { foreignKey: 'employee_id' });
 db.employeePositionHistory.belongsTo(db.employee, { foreignKey: 'employee_id',onDelete: 'CASCADE' });
 
@@ -58,6 +66,7 @@ db.leave.belongsTo(db.employee, { foreignKey: 'employee_id' });
 
 db.employee.hasMany(db.deduction, { foreignKey: 'employee_id' });
 db.deduction.belongsTo(db.employee, { foreignKey: 'employee_id' });
+
 
 db.employee.hasMany(db.promotion, { foreignKey: 'employee_id' });
 db.promotion.belongsTo(db.employee, { foreignKey: 'employee_id' });

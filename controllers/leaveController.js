@@ -1,12 +1,12 @@
-const { Leave } = require('../models/Leave');
-const db = require('../models/index');
+const { Leave } = require('../models');
+const db = require('../models');
 
 // Create a new leave
 const createLeave = async (req, res) => {
   const { employee_id, type_of_leave, start_date, end_date, duration } = req.body;
 
   try {
-    const leave = await Leave.create({
+    const leave = await db.leave.create({
       employee_id,
       type_of_leave,
       start_date,
@@ -23,17 +23,17 @@ const createLeave = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: 'fail',
-      message: 'Server error',
-    });
+      message:error.message,
+        });
   }
 };
 
 // Get all leaves
 const getAllLeaves = async (req, res) => {
   try {
-    const leaves = await Leave.findAll({
+    const leaves = await db.leave.findAll({
       include: [
-        { model: Employee },
+        { model: db.employee },
       ],
     });
     res.status(200).json(leaves);
@@ -45,9 +45,9 @@ const getAllLeaves = async (req, res) => {
 // Get a leave by ID
 const getLeaveById = async (req, res) => {
   try {
-    const leave = await Leave.findByPk(req.params.id, {
+    const leave = await db.leave.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.employee },
       ],
     });
     if (!leave) {
@@ -62,15 +62,15 @@ const getLeaveById = async (req, res) => {
 // Update a leave
 const updateLeave = async (req, res) => {
   try {
-    const [updated] = await Leave.update(req.body, {
+    const [updated] = await db.leave.update(req.body, {
       where: { id: req.params.id },
     });
     if (!updated) {
       return res.status(404).json({ message: 'Leave not found' });
     }
-    const updatedLeave = await Leave.findByPk(req.params.id, {
+    const updatedLeave = await db.leave.findByPk(req.params.id, {
       include: [
-        { model: Employee },
+        { model: db.employee },
       ],
     });
     res.status(200).json(updatedLeave);
@@ -82,7 +82,7 @@ const updateLeave = async (req, res) => {
 // Delete a leave
 const deleteLeave = async (req, res) => {
   try {
-    const deleted = await Leave.destroy({
+    const deleted = await db.leave.destroy({
       where: { id: req.params.id },
     });
     if (!deleted) {

@@ -16,7 +16,7 @@ const createUser = async (req, res) => {
   const { username,password,role} = req.body;
 
   try {
-    const user = await User.create({
+    const user = await db.user.create({
       username,
       password,
       role,
@@ -31,27 +31,27 @@ const createUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: 'fail',
-      message: 'Server error',
-    });
+      message:error.message,
+        });
   }
 };
 
 const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findByPk(req.user.id, {
+    const user = await user.findByPk(req.user.id, {
       include: [
         
-        { model: db.Company },
-        { model: db.Employee },
-        { model: db.Department },
-        { model: db.Leave },
-        { model: db.Deduction },
-        { model: db.Promotion },
-        { model: db.Salary },
-        { model: db.Shift },
-        { model: db.EmployeePositionHistory },
-        { model: db.Attendance },
-        { model: db.Bonus },
+        { model: db.company },
+        { model: db.employee },
+        { model: db.department },
+        { model: db.leave },
+        { model: db.deduction },
+        { model: db.promotion },
+        { model: db.salary },
+        { model: db.shift },
+        { model: db.employeePositionHistory },
+        { model: db.attendance },
+        { model: db.bonus },
       ],
     });
     res.status(200).json({
@@ -68,20 +68,20 @@ const getUserProfile = async (req, res) => {
    
 const getAllUser = async (req, res) => {
   try {
-    const user = await User.findAll(req.user.id, {
+    const user = await db.user.findAll(req.user.id, {
       include: [
         
-        { model: db.Company },
-        { model: db.Employee },
-        { model: db.Department },
-        { model: db.Leave },
-        { model: db.Deduction },
-        { model: db.Promotion },
-        { model: db.Salary },
-        { model: db.Shift },
-        { model: db.EmployeePositionHistory },
-        { model: db.Attendance },
-        { model: db.Bonus },
+        { model: db.company },
+        { model: db.employee },
+        { model: db.department },
+        { model: db.leave },
+        { model: db.deduction },
+        { model: db.promotion },
+        { model: db.salary },
+        { model: db.shift },
+        { model: db.employeePositionHistory },
+        { model: db.attendance },
+        { model: db.bonus },
       ],
     });
     res.status(200).json({
@@ -98,7 +98,7 @@ const getAllUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const [updated] = await User.update(req.body, {
+    const [updated] = await db.user.update(req.body, {
       where: { id: req.params.id },
     });
     if (!updated) {
@@ -107,20 +107,20 @@ const updateUser = async (req, res) => {
         message: 'User not found',
       });
     }
-    const updatedUser = await User.findByPk(req.params.id, {
+    const updatedUser = await db.user.findByPk(req.params.id, {
       include: [
         
-        { model: db.Company },
-        { model: db.Employee },
-        { model: db.Department },
-        { model: db.Leave },
-        { model: db.Deduction },
-        { model: db.Promotion },
-        { model: db.Salary },
-        { model: db.Shift },
-        { model: db.EmployeePositionHistory },
-        { model: db.Attendance },
-        { model: db.Bonus },
+        { model: db.company },
+        { model: db.employee },
+        { model: db.department },
+        { model: db.leave },
+        { model: db.deduction },
+        { model: db.promotion },
+        { model: db.salary },
+        { model: db.shift },
+        { model: db.employeePositionHistory },
+        { model: db.attendance },
+        { model: db.bonus },
       ],
     });
     res.status(200).json({
@@ -137,7 +137,7 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const deleted = await User.destroy({
+    const deleted = await db.user.destroy({
       where: { id: req.params.id },
     });
     if (!deleted) {

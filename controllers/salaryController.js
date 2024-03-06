@@ -1,12 +1,12 @@
-const { Salary } = require('../models/Salary');
-const db = require('../models/index');
+const { Salary } = require('../models');
+const db = require('../models');
 
 // Create a new salary
 const createSalary = async (req, res) => {
   const { employee_id, gross_salary,net_salary,date } = req.body;
 
   try {
-    const salary = await Salary.create({
+    const salary = await db.salary.create({
       employee_id,
       gross_salary,
       net_salary,
@@ -22,17 +22,17 @@ const createSalary = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: 'fail',
-      message: 'Server error',
-    });
+      message:error.message,
+        });
   }
 };
 
 // Get all salaries
 const getAllSalaries = async (req, res) => {
   try {
-    const salaries = await Salary.findAll({
+    const salaries = await db.salary.findAll({
       include: [
-        { model: db.Employee },
+        { model: db.employee },
       ],
     });
     res.status(200).json(salaries);
@@ -44,9 +44,9 @@ const getAllSalaries = async (req, res) => {
 // Get a salary by ID
 const getSalaryById = async (req, res) => {
   try {
-    const salary = await Salary.findByPk(req.params.id, {
+    const salary = await db.salary.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
+        { model: db.employee },
       ],
     });
     if (!salary) {
@@ -61,15 +61,15 @@ const getSalaryById = async (req, res) => {
 // Update a salary
 const updateSalary = async (req, res) => {
   try {
-    const [updated] = await Salary.update(req.body, {
+    const [updated] = await db.salary.update(req.body, {
       where: { id: req.params.id },
     });
     if (!updated) {
       return res.status(404).json({ message: 'Salary not found' });
     }
-    const updatedSalary = await Salary.findByPk(req.params.id, {
+    const updatedSalary = await db.salary.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
+        { model: db.employee },
       ],
     });
     res.status(200).json(updatedSalary);
@@ -81,7 +81,7 @@ const updateSalary = async (req, res) => {
 // Delete a salary
 const deleteSalary = async (req, res) => {
   try {
-    const deleted = await Salary.destroy({
+    const deleted = await db.salary.destroy({
       where: { id: req.params.id },
     });
     if (!deleted) {

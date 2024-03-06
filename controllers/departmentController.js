@@ -1,13 +1,13 @@
-const { Department } = require('../models/Department');
+const { Department } = require('../models');
  // Import the Employee model
-const db = require('../models/index');
+const db = require('../models');
 
 // Create a new department
 const createDepartment= async (req, res) => {
   const { name,manager_id,company_id} = req.body;
 
   try {
-    const department = await Department.create({
+    const department = await db.department.create({
       name,
       manager_id,
       company_id
@@ -22,7 +22,7 @@ const createDepartment= async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: 'fail',
-      message: 'Server error',
+      message: error.message,
     });
   }
 };
@@ -30,10 +30,10 @@ const createDepartment= async (req, res) => {
 // Get all departments
 const getAllDepartments = async (req, res) => {
   try {
-    const departments = await Department.findAll({
+    const departments = await db.department.findAll({
       include: [
-        { model: db.Employee },
-        { model: db.Company },
+        { model: db.employee },
+        { model: db.company },
       ],
     });
     res.status(200).json(departments);
@@ -45,10 +45,10 @@ const getAllDepartments = async (req, res) => {
 // Get a department by ID
 const getDepartmentById = async (req, res) => {
   try {
-    const department = await Department.findByPk(req.params.id, {
+    const department = await db.department.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
-        { model: db.Company },
+        { model: db.employee },
+        { model: db.company },
       ],
     });
     if (!department) {
@@ -63,16 +63,16 @@ const getDepartmentById = async (req, res) => {
 // Update a department
 const updateDepartment = async (req, res) => {
   try {
-    const [updated] = await Department.update(req.body, {
+    const [updated] = await db.department.update(req.body, {
       where: { id: req.params.id },
     });
     if (!updated) {
       return res.status(404).json({ message: 'Department not found' });
     }
-    const updatedDepartment = await Department.findByPk(req.params.id, {
+    const updatedDepartment = await db.department.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
-        { model: db.Company },
+        { model: db.employee },
+        { model: db.company },
       ],
     });
     res.status(200).json(updatedDepartment);
@@ -84,7 +84,7 @@ const updateDepartment = async (req, res) => {
 // Delete a department
 const deleteDepartment = async (req, res) => {
   try {
-    const deleted = await Department.destroy({
+    const deleted = await db.department.destroy({
       where: { id: req.params.id },
     });
     if (!deleted) {

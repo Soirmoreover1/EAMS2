@@ -11,10 +11,11 @@ const validateAuth = (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.userId;
     req.user = decoded;
-    next();
+      next();
   } catch (error) {
-    res.status(400).json({ message: 'Invalid token.' });
+    res.status(400).json({ message: error.message });
   }
 };
 

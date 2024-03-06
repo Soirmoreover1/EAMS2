@@ -1,19 +1,28 @@
 const { User } = require('../models/User');
 const { check, validationResult } = require('express-validator');
+const db = require('../models/index');
 
+const isValidDateFormate = (value) => {
+  const dateFormatRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
+  return dateFormatRegex.test(value);
+};
+
+const isValidDateFormat = (value) => {
+  const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
+  return dateFormatRegex.test(value);
+};
+
+const isValidTimeFormat = (value) => {
+  const timeFormatRegex = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
+  return timeFormatRegex.test(value);
+};
 exports.validateUser = [
   check('username')
     .notEmpty()
     .withMessage('Username is required')
     .isLength({ min: 3, max: 20 })
     .withMessage('Username must be between 3 and 20 characters')
-    .custom((value) => {
-      return User.findOne({ where: { username: value } }).then((user) => {
-        if (user) {
-          return Promise.reject('Username already in use');
-        }
-      });
-    }),
+    ,
   check('password')
     .notEmpty()
     .withMessage('Password is required')
@@ -40,7 +49,7 @@ exports.validateAuth = [
     .isLength({ min: 3, max: 20 })
     .withMessage('Username must be between 3 and 20 characters')
     .custom((value) => {
-      return User.findOne({ where: { username: value } }).then((user) => {
+      return db.user.findOne({ where: { username: value } }).then((user) => {
         if (!user) {
           return Promise.reject('Invalid username or password');
         }
@@ -75,7 +84,7 @@ exports.validateCreateCompany = [
     .notEmpty()
     .withMessage('Manager name is required')
     .isLength({ max: 255 })
-    .withMessage('Manager name must be less than or equal to 255 characters'),
+   .withMessage('Manager name must be less than or equal to 255 characters'),
   check('tax_number')
     .notEmpty()
     .withMessage('Tax number is required')
@@ -117,13 +126,13 @@ exports.validateCreateShift = [
   check('start_time')
     .notEmpty()
     .withMessage('Start time is required')
-    .isISO8601()
-    .withMessage('Start time is not valid'),
+    .isISO8601("hh:mm")
+    .custom(isValidTimeFormat).withMessage('Time must be in the format HH:mm:ss'),
   check('end_time')
     .notEmpty()
     .withMessage('End time is required')
-    .isISO8601()
-    .withMessage('End time is not valid'),
+    .isISO8601("hh:mm")
+    .custom(isValidTimeFormat).withMessage('Time must be in the format HH:mm:ss'),
   check('working_days')
     .notEmpty()
     .withMessage('Working days are required')
@@ -142,11 +151,7 @@ exports.validateCreateShift = [
 ];
 
 exports.validateCreateDeduction = [
-  check('employee_id')
-    .notEmpty()
-    .withMessage('Employee ID is required')
-    .isInt()
-    .withMessage('Employee ID must be an integer'),
+  
   check('deduction_type')
     .notEmpty()
     .withMessage('Deduction type is required')
@@ -160,8 +165,8 @@ exports.validateCreateDeduction = [
   check('date')
     .notEmpty()
     .withMessage('Date is required')
-    .isISO8601()
-    .withMessage('Date is not valid'),
+    .isISO8601('yyyy-mm-dd')
+    .custom(isValidDateFormat).withMessage('date must be in the format yyyy:mm:dd'),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -180,16 +185,8 @@ exports.validateCreateDepartment = [
     .withMessage('Department name is required')
     .isLength({ min: 3, max: 255 })
     .withMessage('Department name must be between 3 and 255 characters'),
-  check('manager_id')
-    .notEmpty()
-    .withMessage('Manager ID is required')
-    .isInt()
-    .withMessage('Manager ID must be an integer'),
-  check('company_id')
-    .notEmpty()
-    .withMessage('Company ID is required')
-    .isInt()
-    .withMessage('Company ID must be an integer'),
+ 
+  
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -203,11 +200,7 @@ exports.validateCreateDepartment = [
 ];
 
 exports.validateCreateBonus = [
-  check('employee_id')
-    .notEmpty()
-    .withMessage('Employee ID is required')
-    .isInt()
-    .withMessage('Employee ID must be an integer'),
+  
   check('bonus_type')
     .notEmpty()
     .withMessage('Bonus type is required')
@@ -221,9 +214,10 @@ exports.validateCreateBonus = [
   check('date')
     .notEmpty()
     .withMessage('Date is required')
-    .isISO8601()
-    .withMessage('Date must be a valid ISO 8601 date'),
-  (req, res, next) => {
+    .isISO8601("yyyy-mm-dd ")
+    .custom(isValidDateFormat).withMessage('date must be in the format yyyy-mm-dd'),
+
+    (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -236,26 +230,22 @@ exports.validateCreateBonus = [
 ];
 
 exports.validateCreateAttendance = [
-  check('employee_id')
-    .notEmpty()
-    .withMessage('Employee ID is required')
-    .isInt()
-    .withMessage('Employee ID must be an integer'),
+ 
   check('date')
     .notEmpty()
     .withMessage('Date is required')
-    .isISO8601()
-    .withMessage('Date must be a valid ISO 8601 date'),
-  check('time_in')
+    .isISO8601("yyyy-mm-dd")
+    .custom(isValidDateFormat).withMessage(' date must be in the format yyyy-mm-dd'),
+    check('time_in')
     .notEmpty()
     .withMessage('Time in is required')
-    .isISO8601()
-    .withMessage('Time in must be a valid ISO 8601 time'),
+    .isISO8601("hh:mm")
+    .custom(isValidTimeFormat).withMessage('time in must be in the format hh:mm'),
   check('time_out')
     .notEmpty()
     .withMessage('Time out is required')
-    .isISO8601()
-    .withMessage('Time out must be a valid ISO 8601 time'),
+    .isISO8601("hh:mm")
+    .custom(isValidTimeFormat).withMessage('time out must be in the format hh:mm'),
   check('total_hours_worked')
     .notEmpty()
     .withMessage('Total hours worked is required')
@@ -278,37 +268,19 @@ exports.validateCreateAttendance = [
   },
 ];
 
-
 exports.validateCreateEmployee = [
   check('name')
     .notEmpty()
     .withMessage('Name is required')
     .isLength({ min: 3 })
     .withMessage('Name must be at least 3 characters long'),
-  check('department_id')
-    .notEmpty()
-    .withMessage('Department ID is required')
-    .isInt()
-    .withMessage('Department ID must be an integer'),
-  check('shift_id')
-    .notEmpty()
-    .withMessage('Shift ID is required')
-    .isInt()
-    .withMessage('Shift ID must be an integer'),
   check('hire_date')
     .notEmpty()
     .withMessage('Hire date is required')
-    .isISO8601()
-    .withMessage('Hire date must be a valid ISO 8601 date'),
-  check('manager_id')
-    .optional()
-    .isInt()
-    .withMessage('Manager ID must be an integer if provided'),
-  check('user_id')
-    .notEmpty()
-    .withMessage('User ID is required')
-    .isInt()
-    .withMessage('User ID must be an integer'),
+    .isISO8601('yyyy-mm-dd')
+    .withMessage('Hire date must be a valid ISO 8601 date')
+    .custom(isValidDateFormat).withMessage('Hire date must be in the format yyyy-mm-dd'),
+    
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -321,13 +293,7 @@ exports.validateCreateEmployee = [
   },
 ];
 
-
 exports.validateCreateLeave = [
-  check('employee_id')
-    .notEmpty()
-    .withMessage('Employee ID is required')
-    .isInt()
-    .withMessage('Employee ID must be an integer'),
   check('type_of_leave')
     .notEmpty()
     .withMessage('Type of leave is required')
@@ -336,13 +302,13 @@ exports.validateCreateLeave = [
   check('start_date')
     .notEmpty()
     .withMessage('Start date is required')
-    .isISO8601()
-    .withMessage('Start date must be a valid ISO 8601 date'),
+    .isISO8601("hh:mm")
+    .custom(isValidTimeFormat).withMessage('start_date must be in the format hh:mm'),
   check('end_date')
     .notEmpty()
     .withMessage('End date is required')
-    .isISO8601()
-    .withMessage('End date must be a valid ISO 8601 date'),
+    .isISO8601("hh:mm")
+    .custom(isValidTimeFormat).withMessage('end_date must be in the format hh:mm'),
   check('duration')
     .notEmpty()
     .withMessage('Duration is required')
@@ -359,37 +325,31 @@ exports.validateCreateLeave = [
     next();
   },
 ];
-
 exports.validateCreateEmployeePositionHistory = [
-  check('employee_id')
-    .notEmpty()
-    .withMessage('Employee ID is required')
-    .isInt()
-    .withMessage('Employee ID must be an integer'),
   check('position')
     .notEmpty()
     .withMessage('Position is required')
     .isLength({ min: 3, max: 255 })
     .withMessage('Position must be at least 3 characters long and no more than 255 characters long'),
-  check('department_id')
-    .notEmpty()
-    .withMessage('Department ID is required')
-    .isInt()
-    .withMessage('Department ID must be an integer'),
+  
   check('salary')
     .notEmpty()
     .withMessage('Salary is required')
     .isFloat()
     .withMessage('Salary must be a float number'),
+  
   check('start_date')
     .notEmpty()
     .withMessage('Start date is required')
-    .isISO8601()
-    .withMessage('Start date must be a valid ISO 8601 date'),
+    .isISO8601("hh:mm")
+    .custom(isValidTimeFormat).withMessage('start_date must be in the format hh:mm'),
+
   check('end_date')
-    .optional()
-    .isISO8601()
-    .withMessage('End date must be a valid ISO 8601 date if provided'),
+  .notEmpty()
+  .withMessage('Start date is required')
+    .isISO8601("hh:mm")
+    .custom(isValidTimeFormat).withMessage('end_date must be in the format hh:mm'),
+
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -404,16 +364,13 @@ exports.validateCreateEmployeePositionHistory = [
 
 
 exports.validateCreatePromotion = [
-  check('employee_id')
-    .notEmpty()
-    .withMessage('Employee ID is required')
-    .isInt()
-    .withMessage('Employee ID must be an integer'),
+ 
   check('promotion_date')
     .notEmpty()
     .withMessage('Promotion date is required')
-    .isISO8601()
-    .withMessage('Promotion date must be a valid ISO 8601 date'),
+    .isISO8601('yyyy-mm-dd')
+    .custom(isValidDateFormat).withMessage('promotion date must be in the format yyyy-mm-dd'),
+
   check('prev_position')
     .notEmpty()
     .withMessage('Previous position is required')
@@ -443,11 +400,7 @@ exports.validateCreatePromotion = [
 
 
 exports.validateCreateSalary = [
-  check('employee_id')
-    .notEmpty()
-    .withMessage('Employee ID is required')
-    .isInt()
-    .withMessage('Employee ID must be an integer'),
+  
   check('gross_salary')
     .notEmpty()
     .withMessage('Gross salary is required')
@@ -461,8 +414,8 @@ exports.validateCreateSalary = [
   check('date')
     .notEmpty()
     .withMessage('Date is required')
-    .isISO8601()
-    .withMessage('Date must be a valid ISO 8601 date'),
+    .isISO8601('yyyy-mm-dd')
+    .custom(isValidDateFormat).withMessage('Hire date must be in the format yyyy-mm-dd'),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -1,13 +1,13 @@
-const { Deduction } = require('../models/Deduction');
-const { Employee } = require('../models/Employee'); // Import the Employee model
-const db = require('../models/index');
+const { Deduction } = require('../models');
+const { Employee } = require('../models'); // Import the Employee model
+const db = require('../models');
 
 // Create a new deduction
 const createDeduction = async (req, res) => {
   const { employee_id,date,deduction_type,deduction_amount} = req.body;
 
   try {
-    const deduction = await Deduction.create({
+    const deduction = await db.deduction.create({
       employee_id,
       deduction_type,
       deduction_amount,
@@ -23,7 +23,7 @@ const createDeduction = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: 'fail',
-      message: 'Server error',
+      message:error.message,
     });
   }
 };
@@ -31,9 +31,9 @@ const createDeduction = async (req, res) => {
 // Get all deductions
 const getAllDeductions = async (req, res) => {
   try {
-    const deductions = await Deduction.findAll({
+    const deductions = await db.deduction.findAll({
       include: [
-        { model: db.Employee },
+        { model: db.employee },
       ],
     });
     res.status(200).json(deductions);
@@ -45,9 +45,9 @@ const getAllDeductions = async (req, res) => {
 // Get a deduction by ID
 const getDeductionById = async (req, res) => {
   try {
-    const deduction = await Deduction.findByPk(req.params.id, {
+    const deduction = await db.deduction.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
+        { model: db.employee },
       ],
     });
     if (!deduction) {
@@ -62,15 +62,15 @@ const getDeductionById = async (req, res) => {
 // Update a deduction
 const updateDeduction = async (req, res) => {
   try {
-    const [updated] = await Deduction.update(req.body, {
+    const [updated] = await db.deduction.update(req.body, {
       where: { id: req.params.id },
     });
     if (!updated) {
       return res.status(404).json({ message: 'Deduction not found' });
     }
-    const updatedDeduction = await Deduction.findByPk(req.params.id, {
+    const updatedDeduction = await db.deduction.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
+        { model: db.employee },
       ],
     });
     res.status(200).json(updatedDeduction);
@@ -82,7 +82,7 @@ const updateDeduction = async (req, res) => {
 // Delete a deduction
 const deleteDeduction = async (req, res) => {
   try {
-    const deleted = await Deduction.destroy({
+    const deleted = await db.deduction.destroy({
       where: { id: req.params.id },
     });
     if (!deleted) {

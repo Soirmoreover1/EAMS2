@@ -1,12 +1,12 @@
-const { Attendance } = require('../models/Attendance');
-const db = require('../models/index');
+const { Attendance } = require('../models');
+const db = require('../models');
 
 // Create a new attendance
 const createAttendance = async (req, res) => {
   const { employee_id,date,time_in,time_out,total_hours_worked,overtime_hours } = req.body;
 
   try {
-    const attendance = await Attendance.create({
+    const attendance = await db.attendance.create({
       employee_id,
       date,
       time_in,
@@ -24,7 +24,7 @@ const createAttendance = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: 'fail',
-      message: 'Server error',
+      message: error.message,
     });
   }
 };
@@ -33,9 +33,9 @@ const createAttendance = async (req, res) => {
 // Get all attendances
 const getAllAttendances = async (req, res) => {
   try {
-    const attendances = await Attendance.findAll({
+    const attendances = await db.attendance.findAll({
       include: [
-        { model: db.Employee },
+        { model: db.employee },
       ],
     });
     res.status(200).json(attendances);
@@ -47,9 +47,9 @@ const getAllAttendances = async (req, res) => {
 // Get an attendance by ID
 const getAttendanceById = async (req, res) => {
   try {
-    const attendance = await Attendance.findByPk(req.params.id, {
+    const attendance = await db.attendance.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
+        { model: db.employee },
       ],
     });
     if (!attendance) {
@@ -64,15 +64,15 @@ const getAttendanceById = async (req, res) => {
 // Update an attendance
 const updateAttendance = async (req, res) => {
   try {
-    const [updated] = await Attendance.update(req.body, {
+    const [updated] = await db.attendance.update(req.body, {
       where: { id: req.params.id },
     });
     if (!updated) {
       return res.status(404).json({ message: 'Attendance not found' });
     }
-    const updatedAttendance = await Attendance.findByPk(req.params.id, {
+    const updatedAttendance = await db.attendance.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
+        { model: db.employee },
       ],
     });
     res.status(200).json(updatedAttendance);
@@ -84,7 +84,7 @@ const updateAttendance = async (req, res) => {
 // Delete an attendance
 const deleteAttendance = async (req, res) => {
   try {
-    const deleted = await Attendance.destroy({
+    const deleted = await db.attendance.destroy({
       where: { id: req.params.id },
     });
     if (!deleted) {

@@ -5,10 +5,8 @@ const {
     getAllCompanies,
     getCompanyById,
     updateCompany,
-    deleteCompany
-                 }=require('../controllers/companyController');
+    deleteCompany  }=require('../controllers/companyController');
 const {validateAuth , checkRoles } = require('../middlewares/authMiddleware');
-
 const { validateCreateCompany } = require('../middlewares/validationMiddleware');
 
 

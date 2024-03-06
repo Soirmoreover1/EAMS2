@@ -1,39 +1,41 @@
-const { Company } = require('../models/Company');
-const db = require('../models/index');
+const { Company } = require('../models');
+const db = require('../models');
 
 // Create a new company
 const createCompany = async (req, res) => {
-  const { name, tax_number, website, location, industry, user_id } = req.body;
-
+  const { name, tax_number,manager, website, location, industry, user_id } = req.body;
+ 
   try {
-    const company = await Company.create({
+    const company = await db.company.create({
       name,
       tax_number,
+      manager,
       website,
       location,
       industry,
       user_id,
     });
 
-    res.status(201).json({
-      status: 'success',
-      data: {
-        company,
+    res.status(201).json( {
+      status: ' create company successfully',
+     data: {
+       company
       },
-    });
+   });
   } catch (error) {
+
     res.status(500).json({
       status: 'fail',
-      message: 'Server error',
+      message: error.message ,
     });
   }
 };
 // Get all companies
 const getAllCompanies = async (req, res) => {
   try {
-    const companies = await Company.findAll({
+    const companies = await db.company.findAll({
       include: [
-        { model: db.Employee },
+        { model: db.employee },
       ],
     });
     res.status(200).json(companies);
@@ -45,9 +47,9 @@ const getAllCompanies = async (req, res) => {
 // Get a company by ID
 const getCompanyById = async (req, res) => {
   try {
-    const company = await Company.findByPk(req.params.id, {
+    const company = await db.company.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
+        { model: db.employee },
       ],
     });
     if (!company) {
@@ -62,15 +64,15 @@ const getCompanyById = async (req, res) => {
 // Update a company
 const updateCompany = async (req, res) => {
   try {
-    const [updated] = await Company.update(req.body, {
+    const [updated] = await db.company.update(req.body, {
       where: { id: req.params.id },
     });
     if (!updated) {
       return res.status(404).json({ message: 'Company not found' });
     }
-    const updatedCompany = await Company.findByPk(req.params.id, {
+    const updatedCompany = await db.company.findByPk(req.params.id, {
       include: [
-        { model: db.Employee },
+        { model: db.employee,as: 'employees' },
       ],
     });
     res.status(200).json(updatedCompany);
@@ -82,7 +84,7 @@ const updateCompany = async (req, res) => {
 // Delete a company
 const deleteCompany = async (req, res) => {
   try {
-    const deleted = await Company.destroy({
+    const deleted = await db.company.destroy({
       where: { id: req.params.id },
     });
     if (!deleted) {
