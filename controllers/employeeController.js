@@ -1,10 +1,11 @@
 const { Employee } = require('../models');
 
 const db = require('../models');
-
+const multer =require('multer')
+const path=require("path") 
 // Create a new employee
 const createEmployee = async (req, res) => {
-  const { name, department_id, shift_id, hire_date, manager_id, user_id } = req.body;
+  const { name, department_id, shift_id, hire_date, image,manager_id, user_id } = req.body;
 
   try {
     const employee = await db.employee.create({
@@ -14,6 +15,7 @@ const createEmployee = async (req, res) => {
       hire_date,
       manager_id,
       user_id,
+      image:req.file.filename,
     });
 
     res.status(201).json({
@@ -29,7 +31,17 @@ const createEmployee = async (req, res) => {
     });
   }
 };
-
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'Public/Images')
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+  }
+})
+const upload = multer({
+  storage: storage
+})
 
 // Get all employees
 const getAllEmployees = async (req, res) => {
@@ -83,7 +95,8 @@ const getEmployeeById = async (req, res) => {
 // Update an employee
 const updateEmployee = async (req, res) => {
   try {
-    const [updated] = await db.employee.update(req.body, {
+    const [updated] = await db.employee.update(req.body,
+      {
       where: { id: req.params.id },
     });
     if (!updated) {
@@ -130,4 +143,5 @@ module.exports = {
   getEmployeeById,
   updateEmployee,
   deleteEmployee,
+  upload,
 };

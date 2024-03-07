@@ -7,13 +7,14 @@ const {
     getEmployeeById,
     updateEmployee,
     deleteEmployee,
+    upload,
   } = require('../controllers/employeeController');
 const {validateAuth , checkRoles } = require('../middlewares/authMiddleware');
 const { validateCreateEmployee } = require('../middlewares/validationMiddleware');
 
 
 // Create a new employee
-router.post('/create',validateCreateEmployee ,createEmployee);
+router.post('/create',upload.single('image'),validateCreateEmployee ,createEmployee);
 
 // Get all employees
 router.get('/showall',getAllEmployees);

@@ -13,6 +13,7 @@ const sequelize = new Sequelize(process.env.DB_NAME,
         freezeTableName: true,
         underscored: true,
       },
+      
     });
 
 const db = {};
