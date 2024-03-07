@@ -12,14 +12,14 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    department_id: {
+    departmentId: {
       type: Sequelize.INTEGER,
       references: {
         model: 'department',
         key: 'id',
       },
     },
-    shift_id: {
+    shiftId: {
       type: Sequelize.INTEGER,
       references: {
         model: 'shift',
@@ -30,14 +30,14 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATEONLY,
       allowNull: false,
     },
-    manager_id: {
+    managerId: {
       type: Sequelize.INTEGER,
       references: {
         model: 'employee',
         key: 'id',
       },
     },
-    user_id: {
+    userId: {
       type: Sequelize.INTEGER,
       references: {
         model: 'user',

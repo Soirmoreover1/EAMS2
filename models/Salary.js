@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    employee_id: {
+    employeeId: {
       type: Sequelize.INTEGER,
       references: {
         model: 'employee',

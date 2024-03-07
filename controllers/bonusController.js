@@ -33,7 +33,8 @@ const getAllBonuses = async (req, res) => {
   try {
     const bonuses = await db.bonus.findAll({
       include: [
-        { model: db.employee },
+        { model: db.employee,
+          as: 'bonuses' },
       ],
     });
     res.status(200).json(bonuses);
@@ -47,7 +48,8 @@ const getBonusById = async (req, res) => {
   try {
     const bonus = await db.bonus.findByPk(req.params.id, {
       include: [
-        { model: db.employee },
+        { model: db.employee,
+          as: 'bonuses' },
       ],
     });
     if (!bonus) {
@@ -70,7 +72,8 @@ const updateBonus = async (req, res) => {
     }
     const updatedBonus = await db.bonus.findByPk(req.params.id, {
       include: [
-        { model: db.employee },
+        { model: db.employee,
+          as: 'bonuses' },
       ],
     });
     res.status(200).json(updatedBonus);

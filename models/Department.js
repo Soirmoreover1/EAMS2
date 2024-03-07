@@ -12,14 +12,14 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    manager_id: {
+    managerId: {
       type: Sequelize.INTEGER,
       references: {
         model: 'employee',
         key: 'id',
       },
     },
-    company_id: {
+    companyId: {
       type: Sequelize.INTEGER,
       references: {
         model: 'company',

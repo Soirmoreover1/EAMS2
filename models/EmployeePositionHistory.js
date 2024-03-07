@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    employee_id: {
+    employeeId: {
       type: Sequelize.INTEGER,
       references: {
         model: 'employee',
@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    department_id: {
+    departmentId: {
       type: Sequelize.INTEGER,
       references: {
         model: 'department',

@@ -126,13 +126,13 @@ exports.validateCreateShift = [
   check('start_time')
     .notEmpty()
     .withMessage('Start time is required')
-    .isISO8601("hh:mm")
-    .custom(isValidTimeFormat).withMessage('Time must be in the format HH:mm:ss'),
+    .custom((value) => isValidTimeFormat(value, 'hh:mm'))
+    .withMessage('Time must be in the format HH:mm'),
   check('end_time')
     .notEmpty()
     .withMessage('End time is required')
-    .isISO8601("hh:mm")
-    .custom(isValidTimeFormat).withMessage('Time must be in the format HH:mm:ss'),
+    .custom((value) => isValidTimeFormat(value, 'hh:mm'))
+    .withMessage('Time must be in the format HH:mm'),
   check('working_days')
     .notEmpty()
     .withMessage('Working days are required')
@@ -239,13 +239,13 @@ exports.validateCreateAttendance = [
     check('time_in')
     .notEmpty()
     .withMessage('Time in is required')
-    .isISO8601("hh:mm")
-    .custom(isValidTimeFormat).withMessage('time in must be in the format hh:mm'),
+    .custom((value) => isValidTimeFormat(value, 'hh:mm'))
+    .withMessage('Time must be in the format HH:mm'),
   check('time_out')
     .notEmpty()
     .withMessage('Time out is required')
-    .isISO8601("hh:mm")
-    .custom(isValidTimeFormat).withMessage('time out must be in the format hh:mm'),
+    .custom((value) => isValidTimeFormat(value, 'hh:mm'))
+    .withMessage('Time must be in the format HH:mm'),
   check('total_hours_worked')
     .notEmpty()
     .withMessage('Total hours worked is required')
@@ -302,13 +302,13 @@ exports.validateCreateLeave = [
   check('start_date')
     .notEmpty()
     .withMessage('Start date is required')
-    .isISO8601("hh:mm")
-    .custom(isValidTimeFormat).withMessage('start_date must be in the format hh:mm'),
+    .custom((value) => isValidTimeFormat(value, 'hh:mm'))
+    .withMessage('Time must be in the format HH:mm'),
   check('end_date')
     .notEmpty()
     .withMessage('End date is required')
-    .isISO8601("hh:mm")
-    .custom(isValidTimeFormat).withMessage('end_date must be in the format hh:mm'),
+    .custom((value) => isValidTimeFormat(value, 'hh:mm'))
+    .withMessage('Time must be in the format HH:mm'),
   check('duration')
     .notEmpty()
     .withMessage('Duration is required')
@@ -341,14 +341,14 @@ exports.validateCreateEmployeePositionHistory = [
   check('start_date')
     .notEmpty()
     .withMessage('Start date is required')
-    .isISO8601("hh:mm")
-    .custom(isValidTimeFormat).withMessage('start_date must be in the format hh:mm'),
+    .custom((value) => isValidTimeFormat(value, 'hh:mm'))
+    .withMessage('Time must be in the format HH:mm'),
 
   check('end_date')
   .notEmpty()
   .withMessage('Start date is required')
-    .isISO8601("hh:mm")
-    .custom(isValidTimeFormat).withMessage('end_date must be in the format hh:mm'),
+  .custom((value) => isValidTimeFormat(value, 'hh:mm'))
+  .withMessage('Time must be in the format HH:mm'),
 
   (req, res, next) => {
     const errors = validationResult(req);

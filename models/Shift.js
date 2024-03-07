@@ -24,7 +24,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    employee_id: {
+    employeeId: {
       type: Sequelize.INTEGER,
       references: {
         model: 'employee',

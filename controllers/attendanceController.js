@@ -35,7 +35,9 @@ const getAllAttendances = async (req, res) => {
   try {
     const attendances = await db.attendance.findAll({
       include: [
-        { model: db.employee },
+        { model: db.employee ,
+          as: 'attendances'
+        },
       ],
     });
     res.status(200).json(attendances);
@@ -49,7 +51,9 @@ const getAttendanceById = async (req, res) => {
   try {
     const attendance = await db.attendance.findByPk(req.params.id, {
       include: [
-        { model: db.employee },
+        { model: db.employee,
+          as: 'attendances' 
+        },
       ],
     });
     if (!attendance) {
@@ -72,7 +76,9 @@ const updateAttendance = async (req, res) => {
     }
     const updatedAttendance = await db.attendance.findByPk(req.params.id, {
       include: [
-        { model: db.employee },
+        { model: db.employee,
+          as: 'attendances'
+        },
       ],
     });
     res.status(200).json(updatedAttendance);

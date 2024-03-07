@@ -35,7 +35,9 @@ const getAllCompanies = async (req, res) => {
   try {
     const companies = await db.company.findAll({
       include: [
-        { model: db.employee },
+        { 
+          model: db.employee,
+          as:"employees" },
       ],
     });
     res.status(200).json(companies);
@@ -49,7 +51,8 @@ const getCompanyById = async (req, res) => {
   try {
     const company = await db.company.findByPk(req.params.id, {
       include: [
-        { model: db.employee },
+        { model: db.employee,
+        as:"employees" },
       ],
     });
     if (!company) {
