@@ -17,6 +17,11 @@ const signup = async (req, res) => {
       password: hashedPassword,
       role,
     });
+
+    // Create and send token as a cookie
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '100h' });
+    res.cookie('token', token, { httpOnly: true }); // Set the token in a cookie
+
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -27,14 +32,21 @@ const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await db.user.findOne({ where: { username } });
+
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
+
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-    const token = jwt.sign({ id: user.id ,  role: user.role }, process.env.JWT_SECRET, { expiresIn: '100h' });
+
+    // Create and send token as a cookie
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '100h' });
+    res.cookie('token', token, { httpOnly: true }); // Set the token in a cookie
+
     res.status(200).json({ user, token });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -42,6 +54,7 @@ const login = async (req, res) => {
 };
 
 const logout = (req, res) => {
+  res.clearCookie('token'); // Clear the token cookie on logout
   res.status(204).end();
 };
 /*

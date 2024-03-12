@@ -1,15 +1,5 @@
-const { User } = require('../models/User');
-const { Employee } = require('../models/Employee');
-const { Department } = require('../models/Department');
-const { Company } = require('../models/Company'); // Import the Employee model
-const { Deduction } = require('../models/Deduction');
-const { Bonus } = require('../models/Bonus');
-const { Leave } = require('../models/Leave');
-const { EmployeePositionHistory } = require('../models/EmployeePositionHistory');
-const { Salary } = require('../models/Salary');
-const { Attendance } = require('../models/Attendance');
-const { Promotion } = require('../models/Promotion');
-const db = require('../models/index');
+const { User } = require('../models');
+const db = require('../models');
 
 
 const createUser = async (req, res) => {
@@ -38,7 +28,7 @@ const createUser = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
   try {
-    const user = await user.findByPk(req.user.id, {
+    const user = await db.user.findByPk(req.user.id, {
       include: [
         
         { model: db.company },
@@ -162,7 +152,7 @@ module.exports = {
     deleteUser,
     getUserProfile,
     createUser ,
-    getAllUser 
+    getAllUser ,
 
 
 };

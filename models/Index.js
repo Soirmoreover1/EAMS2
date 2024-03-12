@@ -38,20 +38,20 @@ db.company = require('./Company')(sequelize, Sequelize);
 
 
 //one
-db.user.hasOne(db.employee);
-db.employee.belongsTo(db.user);
+db.user.hasOne(db.employee,{as: 'employee', foreignKey:{name:'userId',allowNull:false}});
+db.employee.belongsTo(db.user,{as: 'employee', foreignKey:{name:'userId',allowNull:false}});
 //many
-db.user.hasMany(db.company, { as: 'companies' });
-db.company.belongsTo(db.user, { foreignKey: 'userId',as:"user" });
+db.user.hasMany(db.company, {foreignKey: {name:'userId',allowNull:false}, as: 'companies' });
+db.company.belongsTo(db.user, { foreignKey: {name:'userId',allowNull:false},as:'companies' });
 //many
-db.company.hasMany(db.employee, { as:"employees" });
-db.employee.belongsTo(db.company, { foreignKey: 'companyId' ,as:"company"});
+db.company.hasMany(db.employee, {foreignKey: {name:'companyId',allowNull:false}, as:'employees' });
+db.employee.belongsTo(db.company, { foreignKey: {name:'companyId',allowNull:false} ,as:'employees'});
 //one
-db.employee.hasOne(db.department);
-db.department.belongsTo(db.employee);
+db.employee.hasOne(db.department,{as: 'department', foreignKey:{name:'employeeId',allowNull:false}});
+db.department.belongsTo(db.employee,{as: 'department', foreignKey:{name:'employeeId',allowNull:false}});
 //one
-db.employee.hasOne(db.shift);
-db.shift.belongsTo(db.employee);
+db.employee.hasOne(db.shift,{as: 'shift', foreignKey:{name:'employeeId',allowNull:false}});
+db.shift.belongsTo(db.employee,{as: 'shift', foreignKey:{name:'employeeId',allowNull:false}});
 /*//many
 db.company.hasMany(db.department, { as: 'departments' });
 db.department.belongsTo(db.company, { foreignKey: 'companyId',as:"company" });
@@ -59,26 +59,29 @@ db.department.belongsTo(db.company, { foreignKey: 'companyId',as:"company" });
 db.company.hasMany(db.shift, { as: 'shifts', foreignKey: 'companyId' });
 db.shift.belongsTo(db.company, { foreignKey: 'companyId', as: 'company' });
 *///many
-db.employee.hasMany(db.employeePositionHistory, { as: 'employeePositionHistorys', foreignKey: 'employeeId', onDelete: 'CASCADE' });
-db.employeePositionHistory.belongsTo(db.employee, { foreignKey: 'employeeId', as: 'employee' });
+db.employee.hasMany(db.employeePositionHistory, { as: 'employeePositionHistorys',foreignKey:{name:'employeeId',allowNull:false}, onDelete: 'CASCADE' });
+db.employeePositionHistory.belongsTo(db.employee, { foreignKey: {name:'employeeId',allowNull:false}, as: 'employeePositionHistorys' });
 //many
-db.employee.hasMany(db.leave, { as: 'leaves', foreignKey: 'employeeId' });
-db.leave.belongsTo(db.employee, { foreignKey: 'employeeId', as: 'employee' });
+db.employee.hasMany(db.leave, { as: 'leaves', foreignKey:{name:'employeeId',allowNull:false} });
+db.leave.belongsTo(db.employee, { foreignKey:{name:'employeeId',allowNull:false}, as: 'leaves' });
 //many
-db.employee.hasMany(db.deduction, { as: 'deductions', foreignKey: 'employeeId' });
-db.deduction.belongsTo(db.employee, { foreignKey: 'employeeId', as: 'employee' });
+db.employee.hasMany(db.deduction, { as: 'deductions', foreignKey:{name:'employeeId',allowNull:false} });
+db.deduction.belongsTo(db.employee, { foreignKey:{name:'employeeId',allowNull:false}, as:'deductions' });
 //one
-db.employee.hasOne(db.promotion);
-db.promotion.belongsTo(db.employee);
+db.employee.hasOne(db.promotion,{as: 'promotion', foreignKey:{name:'employeeId',allowNull:false}});
+db.promotion.belongsTo(db.employee,{as: 'promotion', foreignKey:{name:'employeeId',allowNull:false}});
 //many
-db.employee.hasMany(db.bonus, { as: 'bonuses', foreignKey: 'employeeId' });
-db.bonus.belongsTo(db.employee, { foreignKey: 'employeeId', as: 'employee' });
+db.employee.hasMany(db.bonus, { as: 'bonuses', foreignKey:{name:'employeeId',allowNull:false}});
+db.bonus.belongsTo(db.employee, { foreignKey:{name:'employeeId',allowNull:false}, as: 'bonuses' });
 //one
-db.employee.hasOne(db.salary);
-db.salary.belongsTo(db.employee);
+db.employee.hasOne(db.salary,{as: 'salary', foreignKey:{name:'employeeId',allowNull:false}});
+db.salary.belongsTo(db.employee,{as: 'salary', foreignKey:{name:'employeeId',allowNull:false}});
 //many 
-db.employee.hasMany(db.attendance, { as: 'attendances', foreignKey: 'employeeId' });
-db.attendance.belongsTo(db.employee, { foreignKey: 'employeeId', as: 'employee' });
+db.employee.hasMany(db.attendance, { as: 'attendances', foreignKey:{name:'employeeId',allowNull:false} });
+db.attendance.belongsTo(db.employee, { foreignKey:{name:'employeeId',allowNull:false}, as: 'attendances' });
+
+
+
 
 
 sequelize.authenticate()
